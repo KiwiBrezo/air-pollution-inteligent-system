@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "naloga01"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+fastapi = "^0.92.0"
+pandas = "^1.5.3"
+numpy = "^1.24.2"
+scikit-learn = "^1.2.1"
+keras = "^2.11.0"
+tensorflow = "^2.11.0"
+pytest = "^7.2.1"
+uvicorn = "^0.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
