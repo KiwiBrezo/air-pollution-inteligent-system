@@ -1,3 +1,4 @@
-./.idea
-./poetry.lock
-./.python-version
+.idea
+poetry.lock
+.python-version
+models/modelAirPollution.pkl
