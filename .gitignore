@@ -2,3 +2,4 @@
 poetry.lock
 .python-version
 models/modelAirPollution.pkl
+/.pytest_cache/
