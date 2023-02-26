@@ -15,7 +15,12 @@ class AirData(BaseModel):
     sifra: str
 
 
+@app.get("/air")
+async def air_polution_home():
+    return {"message": "This is an Air Pollution prediction API"}
+
+
 @app.post("/air/prediction")
 async def air_pollution_prediction(data: AirData):
-    pred = predict_air_pollution(data)
+    pred = int(predict_air_pollution(data))
     return {"prediction": pred}

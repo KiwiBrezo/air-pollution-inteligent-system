@@ -1,6 +1,9 @@
 import os.path
 import pickle
 
+import numpy as np
+import pandas as pd
+
 file_location = os.path.dirname(__file__)
 model = None
 
@@ -23,5 +26,7 @@ def predict_air_pollution(data):
         print("No model is loaded, need to load model...")
         model = load_model()
 
-    # return model.predict()
-    return data
+    df = pd.DataFrame([data.dict()])
+    x = np.array(df["pm25"]).reshape(-1, 1)
+
+    return model.predict(x)[0]
