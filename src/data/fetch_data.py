@@ -33,13 +33,20 @@ def process_data():
 
         meteoroloske_data.append(item_postaja_data[0])
 
-    lst = [[x["datum_do"], x["ge_dolzina"], x["ge_sirina"], x["merilno_mesto"], x["nadm_visina"], x["pm2.5"], x["pm10"], x["sifra"]] for x in meteoroloske_data]
-    df = pd.DataFrame(lst, columns=["datum_do", "ge_dolzina", "ge_sirina", "merilno_mesto", "nadm_visina", "pm25", "pm10", "sifra"])
+    lst = [[x["datum_do"], x["ge_dolzina"], x["ge_sirina"], x["merilno_mesto"], x["nadm_visina"], x["pm2.5"], x["pm10"],
+            x["sifra"]] for x in meteoroloske_data]
+    df = pd.DataFrame(lst,
+                      columns=["datum_do", "ge_dolzina", "ge_sirina", "merilno_mesto", "nadm_visina", "pm25", "pm10",
+                               "sifra"])
     df.to_csv('../../data/processed/processed_data.csv', index=False, header=True)
 
     print("--- Done data processing ---")
 
 
-if __name__ == "__main__":
+def main():
     get_data()
     process_data()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "a889165c-0893-47b1-be3c-ba7d303d2382",
+		"name": "IPT_2_semester_IIS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "air_pollution",
+			"item": [
+				{
+					"name": "Get Air Pollution",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"datum_do\" : \"2023-02-21 14:00\",\r\n    \"ge_dolzina\" : 15.881421,\r\n    \"ge_sirina\" : 46.425815,\r\n    \"merilno_mesto\" : \"Ptuj\",\r\n    \"nadm_visina\" : 230,\r\n    \"pm25\" : 23,\r\n    \"sifra\" : \"E801\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/air/prediction",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"air",
+								"prediction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -67,6 +67,7 @@ def save_model(model):
 
     print("--- Done model ---")
 
+
 def save_metrics(mae, mse, rmse, mapa, acc):
     metrics_file = open("../../reports/metrics.txt", "w")
 
@@ -79,7 +80,11 @@ def save_metrics(mae, mse, rmse, mapa, acc):
     metrics_file.close()
 
 
-if __name__ == "__main__":
+def main():
     (x_train, x_test, y_train, y_test) = prepare_data()
     model = train_model(x_train, x_test, y_train, y_test)
     save_model(model)
+
+
+if __name__ == "__main__":
+    main()
