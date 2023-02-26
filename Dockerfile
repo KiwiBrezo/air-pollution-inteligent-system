@@ -8,7 +8,6 @@ COPY ./requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./src /code/src
-COPY ./test /code/test
 
 RUN mkdir -p ./code/data/processed
 RUN mkdir -p ./code/data/raw
