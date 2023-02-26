@@ -1,14 +1,17 @@
+import os
 import json
 import urllib.request
 import pandas as pd
 
+file_location = os.path.dirname(__file__)
 
 def get_data():
     url = "https://arsoxmlwrapper.app.grega.xyz/api/air/archive"
 
     print("--- Started download ---")
     with urllib.request.urlopen(url) as response:
-        raw_file = open("../../data/raw/raw_data.json", "w")
+        raw_data_filename = os.path.join(file_location, "../../data/raw/raw_data.json")
+        raw_file = open(raw_data_filename, "w")
 
         print("--- Done download, saving to file ---")
 
@@ -21,7 +24,9 @@ def get_data():
 def process_data():
     print("--- Started data processing ---")
 
-    raw_file = open("../../data/raw/raw_data.json", "r")
+    csv_filename = os.path.join(file_location, "../../data/processed/processed_data.csv")
+    raw_data_filename = os.path.join(file_location, "../../data/raw/raw_data.json")
+    raw_file = open(raw_data_filename, "r")
 
     data = json.load(raw_file)
     meteoroloske_data = []
@@ -38,7 +43,7 @@ def process_data():
     df = pd.DataFrame(lst,
                       columns=["datum_do", "ge_dolzina", "ge_sirina", "merilno_mesto", "nadm_visina", "pm25", "pm10",
                                "sifra"])
-    df.to_csv('../../data/processed/processed_data.csv', index=False, header=True)
+    df.to_csv(csv_filename, index=False, header=True)
 
     print("--- Done data processing ---")
 

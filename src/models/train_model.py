@@ -1,15 +1,19 @@
 import numpy as np
 import pandas as pd
 import pickle
+import os
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
+file_location = os.path.dirname(__file__)
+
 
 def prepare_data():
     print("--- Starting preparing data ---")
-    df = pd.read_csv("../../data/processed/processed_data.csv")
+    csv_filename = os.path.join(file_location, "../../data/processed/processed_data.csv")
+    df = pd.read_csv(csv_filename)
 
     print("Number of rows: ", len(df.index))
 
@@ -18,7 +22,12 @@ def prepare_data():
     print("Number of rows after dropping Nan rows: ", len(df.index))
 
     df_x = df["pm25"]
+    df_x = df_x[df_x.apply(lambda x: str(x).isdigit())]
+    df_x = df_x.apply(pd.to_numeric, errors='ignore', downcast='integer')
+
     df_y = df["pm10"]
+    df_y = df_y[df_y.apply(lambda x: str(x).isdigit())]
+    df_y = df_y.apply(pd.to_numeric, errors='ignore', downcast='integer')
 
     print("--- Done preparing data ---")
 
@@ -61,7 +70,7 @@ def train_model(x_train, x_test, y_train, y_test):
 def save_model(model):
     print("--- Saving model ---")
 
-    pkl_filename = "../../models/modelAirPollution.pkl"
+    pkl_filename = os.path.join(file_location, "../../models/modelAirPollution.pkl")
     with open(pkl_filename, 'wb') as file:
         pickle.dump(model, file)
 
@@ -69,7 +78,8 @@ def save_model(model):
 
 
 def save_metrics(mae, mse, rmse, mapa, acc):
-    metrics_file = open("../../reports/metrics.txt", "w")
+    metrics_filename = os.path.join(file_location, "../../reports/metrics.txt")
+    metrics_file = open(metrics_filename, "w")
 
     metrics_file.write("MAE:" + str(mae) + "\n")
     metrics_file.write("MSE:" + str(mse) + "\n")
