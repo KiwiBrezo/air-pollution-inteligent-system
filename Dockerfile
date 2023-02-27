@@ -1,5 +1,5 @@
 FROM python:3.9
-#FROM python:3.9-alpine
+#FROM python:3.9-alpine     #not working ok
 
 WORKDIR /code
 
@@ -9,11 +9,14 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./src /code/src
 
-RUN mkdir -p ./code/data/processed
-RUN mkdir -p ./code/data/raw
-RUN mkdir -p ./code/models
-RUN mkdir -p ./code/reports/figures
+RUN mkdir -p ./data/processed
+RUN mkdir -p ./data/raw
+RUN mkdir -p ./models
+RUN mkdir -p ./reports/figures
+
+RUN python ./src/data/fetch_data.py
+RUN python ./src/models/train_model.py
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.serve.air_pollution_controller:app", "--host", "0.0.0.0", "--port", "8000"]
