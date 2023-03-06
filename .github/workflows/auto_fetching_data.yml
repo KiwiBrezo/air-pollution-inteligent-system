@@ -2,7 +2,7 @@ name: Auto getting data
 
 on:
   schedule:
-    - cron: '35 22 * * *'
+    - cron: '45 22 * * *'
   workflow_dispatch:
 
 jobs:
@@ -29,6 +29,6 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add raw/*
+          git add *
           git commit -m "Updated raw data on `date` with GitHub Actions"
           git push origin master
