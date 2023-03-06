@@ -2,8 +2,7 @@ name: Auto getting data
 
 on:
   schedule:
-    - cron: '45 22 * * *'
-  workflow_dispatch:
+    - cron: '*/20 * * * *'
 
 jobs:
   auto_getting_data:
