@@ -10,7 +10,7 @@ model = None
 
 def load_model():
     print("--- Starting loading model ---")
-    pkl_filename = os.path.join(file_location, "../../models/modelAirPollution.pkl")
+    pkl_filename = os.path.join(file_location, "../../models/model_air_pollution.pkl")
     with open(pkl_filename, 'rb') as file:
         loaded_model = pickle.load(file)
 

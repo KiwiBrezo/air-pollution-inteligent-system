@@ -70,7 +70,7 @@ def train_model(x_train, x_test, y_train, y_test):
 def save_model(model):
     print("--- Saving model ---")
 
-    pkl_filename = os.path.join(file_location, "../../models/modelAirPollution.pkl")
+    pkl_filename = os.path.join(file_location, "../../models/model_air_pollution.pkl")
     with open(pkl_filename, 'wb') as file:
         pickle.dump(model, file)
 

@@ -2,6 +2,7 @@ import os
 import json
 import urllib.request
 import pandas as pd
+from datetime import date
 
 file_location = os.path.dirname(__file__)
 
@@ -10,7 +11,7 @@ def get_data():
 
     print("--- Started download ---")
     with urllib.request.urlopen(url) as response:
-        raw_data_filename = os.path.join(file_location, "../../data/raw/raw_data.json")
+        raw_data_filename = os.path.join(file_location,  "../../data/raw/air/raw_data_" + date.today().strftime("%b-%d-%Y") + ".json")
         raw_file = open(raw_data_filename, "w")
 
         print("--- Done download, saving to file ---")
@@ -25,7 +26,7 @@ def process_data():
     print("--- Started data processing ---")
 
     csv_filename = os.path.join(file_location, "../../data/processed/processed_data.csv")
-    raw_data_filename = os.path.join(file_location, "../../data/raw/raw_data.json")
+    raw_data_filename = os.path.join(file_location, "../../data/raw/air/raw_data_" + date.today().strftime("%b-%d-%Y") + ".json")
     raw_file = open(raw_data_filename, "r")
 
     data = json.load(raw_file)

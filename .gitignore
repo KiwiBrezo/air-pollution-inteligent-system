@@ -1,5 +1,4 @@
 .idea
-poetry.lock
+.pytest_cache
 .python-version
-models/modelAirPollution.pkl
-/.pytest_cache/
+poetry.lock
