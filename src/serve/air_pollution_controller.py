@@ -5,14 +5,16 @@ from src.models.predict_model import predict_air_pollution
 app = FastAPI()
 
 
-class AirData(BaseModel):
+class WeatherData(BaseModel):
     datum_do: str
-    ge_dolzina: float
-    ge_sirina: float
-    merilno_mesto: str
-    nadm_visina: int
+    temperature: float
+    relativehumidity: float
+    dewpoint: float
+    surface_pressure: float
+    cloudcover: float
+    windspeed: float
+    winddirection: float
     pm25: int
-    sifra: str
 
 
 @app.get("/air")
@@ -21,6 +23,6 @@ async def air_polution_home():
 
 
 @app.post("/air/prediction")
-async def air_pollution_prediction(data: AirData):
+async def air_pollution_prediction(data: WeatherData):
     pred = int(predict_air_pollution(data))
     return {"prediction": pred}

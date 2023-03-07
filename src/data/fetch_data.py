@@ -93,7 +93,7 @@ def pre_preprocess_data_weather_historical():
     data = json.load(raw_file)
 
     df = pd.DataFrame(
-        columns=["datum_do", "temperature", "relativehumidity", "dewpoint", "dewpoint", "surface_pressure", "cloudcover",
+        columns=["datum_do", "temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover",
                  "windspeed", "winddirection"])
 
     df["datum_do"] = data["hourly"]["time"]
@@ -116,7 +116,8 @@ def merge_processed_data():
     print("--- Started margin data ---")
 
     air_pollution_csv_filename = os.path.join(file_location, "../../data/processed/processed_data_air_pollution.csv")
-    historical_weather_csv_filename = os.path.join(file_location, "../../data/processed/processed_data_historical_weather.csv")
+    historical_weather_csv_filename = os.path.join(file_location, "../../data/processed"
+                                                                  "/processed_data_historical_weather.csv")
     merged_csv_filename = os.path.join(file_location, "../../data/processed/processed_data_merged.csv")
 
     df_air_pollution = pd.read_csv(air_pollution_csv_filename)

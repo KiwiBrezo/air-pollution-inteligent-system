@@ -27,6 +27,6 @@ def predict_air_pollution(data):
         model = load_model()
 
     df = pd.DataFrame([data.dict()])
-    x = np.array(df["pm25"]).reshape(-1, 1)
+    x = np.array(df[["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed", "winddirection", "pm25"]])
 
     return model.predict(x)[0]

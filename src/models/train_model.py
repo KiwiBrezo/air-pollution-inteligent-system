@@ -12,24 +12,25 @@ file_location = os.path.dirname(__file__)
 
 def prepare_data():
     print("--- Starting preparing data ---")
-    csv_filename = os.path.join(file_location, "../../data/processed/processed_data.csv")
+
+    csv_filename = os.path.join(file_location, "../../data/processed/processed_data_merged.csv")
     df = pd.read_csv(csv_filename)
 
-    print("Number of rows: ", len(df.index))
+    print("     -> Number of rows: ", len(df.index))
 
     df = df.dropna()
 
-    print("Number of rows after dropping Nan rows: ", len(df.index))
+    print("     -> Number of rows after dropping Nan rows: ", len(df.index))
 
-    df_x = df["pm25"]
-    df_x = df_x[df_x.apply(lambda x: str(x).isdigit())]
+    df_x = df[["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed", "winddirection", "pm25"]]
+    df_x = df_x[df_x["pm25"].apply(lambda x: str(x).isdigit())]
     df_x = df_x.apply(pd.to_numeric, errors='ignore', downcast='integer')
 
     df_y = df["pm10"]
     df_y = df_y[df_y.apply(lambda x: str(x).isdigit())]
     df_y = df_y.apply(pd.to_numeric, errors='ignore', downcast='integer')
 
-    print("--- Done preparing data ---")
+    print("     -> Done preparing data")
 
     return train_test_split(df_x, df_y, test_size=0.2)
 
@@ -42,11 +43,11 @@ def train_model(x_train, x_test, y_train, y_test):
     y_train = np.array(y_train)
     y_test = np.array(y_train)
 
-    random_forest_model = RandomForestRegressor()
+    random_forest_model = RandomForestRegressor(max_depth=10, n_estimators=10)
 
-    random_forest_model.fit(x_train.reshape(-1, 1), y_train)
+    random_forest_model.fit(x_train, y_train)
 
-    predictions = random_forest_model.predict(x_test.reshape(-1, 1))
+    predictions = random_forest_model.predict(x_test)
 
     mae = metrics.mean_absolute_error(y_test, predictions)
     mse = metrics.mean_squared_error(y_test, predictions)
@@ -62,7 +63,7 @@ def train_model(x_train, x_test, y_train, y_test):
     print('Mean Absolute Percentage Error (MAPE):', round(mape * 100, 2))
     print('Accuracy:', acc)
 
-    print("--- Done training model ---")
+    print("     -> Done training model")
 
     return random_forest_model
 
