@@ -14,7 +14,7 @@ def load_model():
     with open(pkl_filename, 'rb') as file:
         loaded_model = pickle.load(file)
 
-    print("--- Done loading model ---")
+    print("     -> Done loading model")
 
     return loaded_model
 

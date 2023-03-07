@@ -74,7 +74,7 @@ def save_model(model):
     with open(pkl_filename, 'wb') as file:
         pickle.dump(model, file)
 
-    print("--- Done model ---")
+    print("     -> Done model")
 
 
 def save_metrics(mae, mse, rmse, mapa, acc):
