@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style/app.css">
+    
+    <title>Air Pollution Participation</title>
+</head>
+
+<body>
+<div class="container mt-4">
+    <h2>Air Pollution Ptuj</h2>
+    <h4 class="px-3 mt-4">Right now</h4>
+    <div class="basic-info-container p-3 my-2">
+        <p>
+            <span class="fw-bold">Temperature: </span>
+            <span id="basicTemperature"></span>
+        </p>
+        <p>
+            <span class="fw-bold">Humidity: </span>
+            <span id="basicHumidity"></span>
+        </p>
+        <p>
+            <span class="fw-bold">Wind Speed: </span>
+            <span id="basicWindSpeed"></span>
+        </p>
+        <p>
+            <span class="fw-bold">Precipitation Probability: </span>
+            <span id="basicPrecipitationProbability"></span>
+        </p>
+    </div>
+
+    <h4 class="px-3 mt-4">Week forecast</h4>
+    <canvas class="px-3" id="myChart"></canvas>
+</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/script/app.js"></script>
+
+</html>
