@@ -1,5 +1,6 @@
 $(document).ready(() => {
     getBasicData();
+    getBasicPollutionData()
 })
 
 function getBasicData() {
@@ -9,6 +10,15 @@ function getBasicData() {
             console.log(data);
             showBasicData(data);
             showGraph(data);
+        }
+    })
+}
+
+function getBasicPollutionData() {
+    $.ajax({
+        url : "https://arsoxmlwrapper.app.grega.xyz/api/air/archive",   //CORS ... need fixing
+        success : function (data) {
+            console.log(data);
         }
     })
 }

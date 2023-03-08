@@ -16,26 +16,39 @@
 <div class="container mt-4">
     <h2>Air Pollution Ptuj</h2>
     <h4 class="px-3 mt-4">Right now</h4>
-    <div class="basic-info-container p-3 my-2">
-        <p>
-            <span class="fw-bold">Temperature: </span>
-            <span id="basicTemperature"></span>
-        </p>
-        <p>
-            <span class="fw-bold">Humidity: </span>
-            <span id="basicHumidity"></span>
-        </p>
-        <p>
-            <span class="fw-bold">Wind Speed: </span>
-            <span id="basicWindSpeed"></span>
-        </p>
-        <p>
-            <span class="fw-bold">Precipitation Probability: </span>
-            <span id="basicPrecipitationProbability"></span>
-        </p>
+    <div class="row mx-3">
+        <div class="basic-info-container p-3 my-2 col-6">
+            <p>
+                <span class="fw-bold">Temperature: </span>
+                <span id="basicTemperature"></span>
+            </p>
+            <p>
+                <span class="fw-bold">Humidity: </span>
+                <span id="basicHumidity"></span>
+            </p>
+            <p>
+                <span class="fw-bold">Wind Speed: </span>
+                <span id="basicWindSpeed"></span>
+            </p>
+            <p>
+                <span class="fw-bold">Precipitation Probability: </span>
+                <span id="basicPrecipitationProbability"></span>
+            </p>
+        </div>
+
+        <div class="pollution-info-container col-6">
+            <p class="my-4">
+                <span class="fw-bold pollution-text">PM2.5: </span>
+                <span id="basicPm25"></span>
+            </p>
+            <p class="my-4">
+                <span class="fw-bold pollution-text">PM10: </span>
+                <span id="basicPm10"></span>
+            </p>
+        </div>
     </div>
 
-    <h4 class="px-3 mt-4">Week forecast</h4>
+    <h4 class="px-3 mt-4">Week air pollution forecast</h4>
     <canvas class="px-3" id="myChart"></canvas>
 </div>
 </body>
