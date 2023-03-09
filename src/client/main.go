@@ -21,8 +21,8 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", getRoot)
 
-	fmt.Printf("Started server on http://localhost:%d", 3333)
-	err := http.ListenAndServe(":3333", nil)
+	fmt.Printf("Started server on http://localhost:%d", 80)
+	err := http.ListenAndServe(":80", nil)
 
 	if errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("server closed\n")

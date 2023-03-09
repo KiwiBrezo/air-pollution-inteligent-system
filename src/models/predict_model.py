@@ -3,6 +3,7 @@ import pickle
 
 import numpy as np
 import pandas as pd
+from fastapi.encoders import jsonable_encoder
 
 file_location = os.path.dirname(__file__)
 model = None
@@ -26,7 +27,7 @@ def predict_air_pollution(data):
         print("No model is loaded, need to load model...")
         model = load_model()
 
-    df = pd.DataFrame([data.dict()])
+    df = pd.DataFrame(jsonable_encoder(data))
     x = np.array(df[["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed", "winddirection", "pm25"]])
 
-    return model.predict(x)[0]
+    return model.predict(x)

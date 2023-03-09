@@ -1,8 +1,16 @@
+from typing import List
+
+import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
+
 from src.models.predict_model import predict_air_pollution
+from src.util.cache_air_pollution import get_meteoroloske_data, init_cache
 
 app = FastAPI()
+
+init_cache()
 
 
 class WeatherData(BaseModel):
@@ -17,12 +25,34 @@ class WeatherData(BaseModel):
     pm25: int
 
 
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/air")
 async def air_polution_home():
     return {"message": "This is an Air Pollution prediction API"}
 
 
+@app.get("/air/now/ptuj")
+async def get_meteoroloske():
+    return get_meteoroloske_data()
+
+
 @app.post("/air/prediction")
-async def air_pollution_prediction(data: WeatherData):
-    pred = int(predict_air_pollution(data))
-    return {"prediction": pred}
+async def air_pollution_prediction(data: List[WeatherData]):
+    pred = np.asarray(np.array(predict_air_pollution(data)), dtype='int')
+
+    return {"prediction": pred.tolist()}
