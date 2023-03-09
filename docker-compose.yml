@@ -1,0 +1,26 @@
+version: "3.2"
+services:
+  air-pollution-backend:
+    image: air-pollution-backend
+    build:
+      dockerfile: ./Dockerfile
+    container_name: air-pollution-backend
+    hostname: air-pollution-backend
+    ports:
+      - "8000:8000"
+    restart: always
+
+  air-pollution-frontend:
+    image: air-pollution-frontend
+    build:
+      context: ./src/client/
+      dockerfile: Dockerfile
+    container_name: air-pollution-frontend
+    hostname: air-pollution-frontend
+    depends_on:
+      - air-pollution-backend
+    ports:
+      - "80:80"
+    restart: always
+
+

@@ -1,0 +1,1 @@
+Run `docker build --tag air-pollution-frontend .`
