@@ -16,7 +16,7 @@ def get_data_air_pollution():
     with urllib.request.urlopen(url) as response:
         raw_data_filename = os.path.join(file_location,
                                          "../../data/raw/air/raw_data_" + date.today().strftime("%b-%d-%Y") + ".json")
-        raw_file = open(raw_data_filename, "wb")
+        raw_file = open(raw_data_filename, "wb+")
 
         print("     -> Done download, saving to file...")
 
@@ -43,7 +43,7 @@ def get_data_weather_history():
     with urllib.request.urlopen(url) as response:
         raw_data_filename = os.path.join(file_location, "../../data/raw/weather/raw_data_" + date.today().strftime(
             "%b-%d-%Y") + ".json")
-        raw_file = open(raw_data_filename, "wb")
+        raw_file = open(raw_data_filename, "wb+")
 
         print("     -> Done download, saving to file...")
 
@@ -59,7 +59,7 @@ def pre_preprocess_data_air_pollution():
     csv_filename = os.path.join(file_location, "../../data/processed/processed_data_air_pollution.csv")
     raw_data_filename = os.path.join(file_location,
                                      "../../data/raw/air/raw_data_" + date.today().strftime("%b-%d-%Y") + ".json")
-    raw_file = open(raw_data_filename, "r")
+    raw_file = open(raw_data_filename, "r+")
 
     data = json.load(raw_file)
     meteoroloske_data = []
@@ -88,7 +88,7 @@ def pre_preprocess_data_weather_historical():
     raw_data_filename = os.path.join(file_location,
                                      "../../data/raw/weather/raw_data_" + date.today().strftime("%b-%d-%Y") + ".json")
 
-    raw_file = open(raw_data_filename, "r")
+    raw_file = open(raw_data_filename, "r+")
 
     data = json.load(raw_file)
 

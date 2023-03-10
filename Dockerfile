@@ -10,7 +10,8 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY ./src /code/src
 
 RUN mkdir -p ./data/processed
-RUN mkdir -p ./data/raw
+RUN mkdir -p ./data/raw/air
+RUN mkdir -p ./data/raw/weather
 RUN mkdir -p ./models
 RUN mkdir -p ./reports/figures
 
