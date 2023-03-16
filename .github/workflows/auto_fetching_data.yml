@@ -1,8 +1,8 @@
 name: Auto getting data
 
-on:
-  schedule:
-    - cron: '0 1 * * *'
+#on:
+  #schedule:
+    #- cron: '0 1 * * *'
 
 jobs:
   auto_getting_data:
