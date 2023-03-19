@@ -20,6 +20,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Set up DVC
         uses: iterative/setup-dvc@v1
+      - name: Download data with DVC
+        run: |
+          dvc pull
+        uses: iterative/setup-dvc@v1
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
