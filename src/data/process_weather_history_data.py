@@ -2,6 +2,8 @@ import json
 import os
 from datetime import date
 
+import pandas as pd
+
 file_location = os.path.dirname(__file__)
 
 

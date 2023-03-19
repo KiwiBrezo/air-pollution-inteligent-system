@@ -1,5 +1,5 @@
 import os
-import urllib
+import urllib.request
 from datetime import date
 
 file_location = os.path.dirname(__file__)
