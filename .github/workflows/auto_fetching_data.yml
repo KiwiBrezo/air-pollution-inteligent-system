@@ -7,6 +7,7 @@ on:
 
 jobs:
   auto_getting_data:
+    container: docker://dvcorg/cml-py3:latest
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,6 +23,7 @@ jobs:
         uses: iterative/setup-dvc@v1
       - name: Download data with DVC
         run: |
+          ls
           dvc pull
       - name: Install dependencies
         run: |
