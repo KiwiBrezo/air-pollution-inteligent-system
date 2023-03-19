@@ -21,9 +21,12 @@ jobs:
       - name: Set up DVC
         uses: iterative/setup-dvc@v1
       - name: Download data with DVC
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           ls
-          dvc pull -f -r origin
+          dvc pull -v -f -r origin
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
