@@ -1,5 +1,6 @@
 [core]
-    remote = storage
+    remote = origin
     autostage = true
-['remote "storage"']
-    url = gdrive://1KJs-c0A8xJ89hmYj6EoIBiLNMxo7dhzo
+['remote "origin"']
+    url = s3://dvc
+    endpointurl = https://dagshub.com/KiwiBrezo/air-pollution-inteligent-system.s3
