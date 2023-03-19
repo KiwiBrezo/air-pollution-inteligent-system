@@ -23,7 +23,6 @@ jobs:
       - name: Download data with DVC
         run: |
           dvc pull
-        uses: iterative/setup-dvc@v1
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
