@@ -7,12 +7,11 @@ on:
 
 jobs:
   auto_getting_data:
-    container: docker://dvcorg/cml-py3:latest
+    #container: docker://dvcorg/cml-py3:latest
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9"]
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
