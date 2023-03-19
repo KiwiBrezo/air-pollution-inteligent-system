@@ -23,7 +23,7 @@ jobs:
       - name: Download data with DVC
         run: |
           ls
-          dvc pull -r origin
+          dvc pull -f -r origin
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
