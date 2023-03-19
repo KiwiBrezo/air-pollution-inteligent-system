@@ -1,6 +1,7 @@
 name: Auto getting data
 
-#on:
+on:
+  workflow_dispatch:
   #schedule:
     #- cron: '0 1 * * *'
 
@@ -17,10 +18,16 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Set up DVC
+        uses: iterative/setup-dvc@v1
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Add data to storage with DVC
+        run: |
+          dvc add ./data/
+          dvc push
       - name: Run auto fetch data
         run: |
           python src/data/fetch_data.py
