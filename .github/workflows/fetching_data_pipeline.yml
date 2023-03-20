@@ -56,7 +56,7 @@ jobs:
           git push origin master
       - name: Save git HEAD sha
         id: sha_new
-        run: echo "SHA_NEW=${git rev-parse HEAD}" >> "$GITHUB_OUTPUT"
+        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   preprocess_air_data:
     needs: fetch_air_data
@@ -116,4 +116,4 @@ jobs:
           git push origin master
       - name: Save git HEAD sha
         id: sha_new
-        run: echo "SHA_NEW=${git rev-parse HEAD}" >> "$GITHUB_OUTPUT"
+        run: echo "SHA_NEW=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
