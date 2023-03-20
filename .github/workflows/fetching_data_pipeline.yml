@@ -58,7 +58,7 @@ jobs:
       - name: Save git HEAD sha
         id: sha_new
         run: echo "SHA_NEW=${git rev-parse HEAD}" >> "$GITHUB_OUTPUT"
-        
+
   preprocess_air_data:
     needs: fetch_air_data
     runs-on: ubuntu-latest
@@ -72,6 +72,7 @@ jobs:
     steps:
       - env:
           SHA_NEW: ${{ needs.fetch_air_data.outputs.sha_new }}
+        run: echo "$SHA_NEW"
       - uses: actions/checkout@v3
         with:
           ref: ${{ needs.fetch_air_data.outputs.sha_new }}
