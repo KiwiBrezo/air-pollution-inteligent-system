@@ -59,7 +59,7 @@ jobs:
           poetry install --no-root --without dev
       - name: Run auto fetch data
         run: |
-          poetry run src/data/fetch_air_data.py
+          poetry run python src/data/fetch_air_data.py
       - name: Add data to storage with DVC
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -117,7 +117,7 @@ jobs:
           poetry install --no-root --without dev
       - name: Run auto fetch data
         run: |
-          poetry run src/data/process_air_data.py
+          poetry run python src/data/process_air_data.py
       - name: Add data to storage with DVC
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -175,7 +175,7 @@ jobs:
           poetry install --no-root --without dev
       - name: Run auto fetch data
         run: |
-          poetry run src/data/fetch_weather_history_data.py
+          poetry run python src/data/fetch_weather_history_data.py
       - name: Add data to storage with DVC
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -233,7 +233,7 @@ jobs:
           poetry install --no-root --without dev
       - name: Run auto fetch data
         run: |
-          poetry run src/data/process_weather_history_data.py
+          poetry run python src/data/process_weather_history_data.py
       - name: Add data to storage with DVC
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -291,7 +291,7 @@ jobs:
           poetry install --no-root --without dev
       - name: Run auto fetch data
         run: |
-          poetry run src/data/merge_air_weather_data.py
+          poetry run python src/data/merge_air_weather_data.py
       - name: Add data to storage with DVC
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
