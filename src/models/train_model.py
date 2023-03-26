@@ -13,26 +13,36 @@ file_location = os.path.dirname(__file__)
 def prepare_data():
     print("--- Starting preparing data ---")
 
-    csv_filename = os.path.join(file_location, "../../data/processed/processed_data_merged.csv")
-    df = pd.read_csv(csv_filename)
+    train_csv_filename = os.path.join(file_location, "../../data/processed/train_data.csv")
+    test_csv_filename = os.path.join(file_location, "../../data/processed/test_data.csv")
+    df_train = pd.read_csv(train_csv_filename)
+    df_test = pd.read_csv(test_csv_filename)
 
-    print("     -> Number of rows: ", len(df.index))
+    print("     -> Number of rows in train dataset: ", len(df_train.index))
+    print("     -> Number of rows in test dataset: ", len(df_test.index))
 
-    df = df.dropna()
+    df_train = df_train.dropna()
+    df_test = df_test.dropna()
 
-    print("     -> Number of rows after dropping Nan rows: ", len(df.index))
+    print("     -> Number of rows after dropping Nan rows in train dataset: ", len(df_train.index))
+    print("     -> Number of rows after dropping Nan rows in test dataset: ", len(df_test.index))
 
-    df_x = df[["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed", "winddirection", "pm25"]]
-    df_x = df_x[df_x["pm25"].apply(lambda x: str(x).isdigit())]
-    df_x = df_x.apply(pd.to_numeric, errors='ignore', downcast='integer')
+    df_train_x = df_train[
+        ["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed", "winddirection",
+         "pm25"]]
 
-    df_y = df["pm10"]
-    df_y = df_y[df_y.apply(lambda x: str(x).isdigit())]
-    df_y = df_y.apply(pd.to_numeric, errors='ignore', downcast='integer')
+    df_train_y = df_train["pm10"]
+
+    df_test_x = df_test[
+        ["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed", "winddirection",
+         "pm25"]]
+
+    df_test_y = df_test["pm10"]
 
     print("     -> Done preparing data")
 
-    return train_test_split(df_x, df_y, test_size=0.2)
+    # return train_test_split(df_x, df_y, test_size=0.2)
+    return (df_train_x, df_test_x, df_train_y, df_test_y)
 
 
 def train_model(x_train, x_test, y_train, y_test):

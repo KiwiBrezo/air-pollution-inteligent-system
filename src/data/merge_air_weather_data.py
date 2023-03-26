@@ -11,7 +11,7 @@ def merge_processed_data():
     air_pollution_csv_filename = os.path.join(file_location, "../../data/processed/processed_data_air_pollution.csv")
     historical_weather_csv_filename = os.path.join(file_location, "../../data/processed"
                                                                   "/processed_data_historical_weather.csv")
-    merged_csv_filename = os.path.join(file_location, "../../data/processed/processed_data_merged.csv")
+    merged_csv_filename = os.path.join(file_location, "../../data/processed/current_processed_data_merged.csv")
 
     df_air_pollution = pd.read_csv(air_pollution_csv_filename)
     df_historical_weather = pd.read_csv(historical_weather_csv_filename)
