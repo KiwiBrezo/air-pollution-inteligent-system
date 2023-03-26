@@ -22,4 +22,4 @@ jobs:
           poetry install --no-root --without dev
       - name: Test with pytest
         run: |
-          pytest
+          poetry run pytest
