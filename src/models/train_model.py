@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import pickle
 import os
+import mlflow
 
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
 file_location = os.path.dirname(__file__)
@@ -47,6 +47,7 @@ def prepare_data():
 
 def train_model(x_train, x_test, y_train, y_test):
     print("--- Starting training model ---")
+    mlflow.sklearn.autolog()
 
     x_train = np.array(x_train)
     x_test = np.array(x_train)
@@ -65,6 +66,7 @@ def train_model(x_train, x_test, y_train, y_test):
     mape = np.mean(np.abs((y_test - predictions) / np.abs(predictions)))
     acc = round(100 * (1 - mape), 2)
 
+    mlflow.last_active_run()
     save_metrics(mae, mse, rmse, mape, acc)
 
     print('Mean Absolute Error (MAE):', mae)
@@ -108,4 +110,6 @@ def main():
 
 
 if __name__ == "__main__":
+    mlflow.set_tracking_uri("https://dagshub.com/KiwiBrezo/air-pollution-inteligent-system.mlflow")
+    mlflow.set_experiment(experiment_name="Train model")
     main()
