@@ -3,3 +3,5 @@
 .python-version
 poetry.lock
 /data
+/reports/data_report.html
+/reports/data_stability.html
