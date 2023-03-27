@@ -9,10 +9,12 @@ def split_data_to_train_test__set():
     print("--- Started splitting data ---")
 
     merged_csv_filename = os.path.join(file_location, "../../data/processed/current_processed_data_merged.csv")
+    ref_merged_csv_filename = os.path.join(file_location, "../../data/processed/reference_processed_data_merged.csv")
     train_csv_filename = os.path.join(file_location, "../../data/processed/train_data.csv")
     test_csv_filename = os.path.join(file_location, "../../data/processed/test_data.csv")
 
     df_train = pd.read_csv(merged_csv_filename)
+    df_train.to_csv(ref_merged_csv_filename)
 
     df_train = df_train[df_train["pm25"].apply(lambda x: str(x).isdigit())]
     df_train = df_train.apply(pd.to_numeric, errors='ignore', downcast='integer')
