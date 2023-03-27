@@ -32,3 +32,11 @@ jobs:
         run: |
           poetry run python great_expectations/run_air_pollution_first_checkpoint.py
           poetry run python great_expectations/run_check_data_quality.py
+      - name: Deploy DataDocs to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: "great_expectations/uncommitted/data_docs/local_site"
+          production-deploy: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
