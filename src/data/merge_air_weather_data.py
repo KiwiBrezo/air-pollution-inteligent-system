@@ -24,7 +24,7 @@ def merge_processed_data():
     number_of_rows_before = len(df_merged.index)
 
     #Odstranimo vse vrstice v katerih se pojavi podatek NaN
-    df_merged = df_merged.dropna()
+    #df_merged = df_merged.dropna()
 
     number_of_rows_after = len(df_merged.index)
 

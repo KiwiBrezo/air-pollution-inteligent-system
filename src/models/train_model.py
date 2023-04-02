@@ -5,6 +5,9 @@ import os
 import mlflow
 
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
 
 file_location = os.path.dirname(__file__)
@@ -21,8 +24,8 @@ def prepare_data():
     print("     -> Number of rows in train dataset: ", len(df_train.index))
     print("     -> Number of rows in test dataset: ", len(df_test.index))
 
-    df_train = df_train.dropna()
-    df_test = df_test.dropna()
+    # df_train = df_train.dropna()
+    # df_test = df_test.dropna()
 
     print("     -> Number of rows after dropping Nan rows in train dataset: ", len(df_train.index))
     print("     -> Number of rows after dropping Nan rows in test dataset: ", len(df_test.index))
@@ -50,15 +53,20 @@ def train_model(x_train, x_test, y_train, y_test):
     mlflow.sklearn.autolog()
 
     x_train = np.array(x_train)
-    x_test = np.array(x_train)
+    x_test = np.array(x_test)
     y_train = np.array(y_train)
-    y_test = np.array(y_train)
+    y_test = np.array(y_test)
 
-    random_forest_model = RandomForestRegressor(max_depth=10, n_estimators=10)
+    train_pipe = Pipeline([
+        ('imputer', SimpleImputer()),
+        ('regressor', RandomForestRegressor())
+    ])
 
-    random_forest_model.fit(x_train, y_train)
+    train_pipe.set_params(**get_best_params(x_train, y_train))
 
-    predictions = random_forest_model.predict(x_test)
+    train_pipe.fit(x_train, y_train)
+
+    predictions = train_pipe.predict(x_test)
 
     mae = metrics.mean_absolute_error(y_test, predictions)
     mse = metrics.mean_squared_error(y_test, predictions)
@@ -77,7 +85,27 @@ def train_model(x_train, x_test, y_train, y_test):
 
     print("     -> Done training model")
 
-    return random_forest_model
+    return train_pipe
+
+
+def get_best_params(x_train, y_train):
+    pipe = Pipeline([
+        ('imputer', SimpleImputer()),
+        ('regressor', RandomForestRegressor())
+    ])
+
+    param_grid = {
+        'regressor__n_estimators': [50, 100, 200],
+        'regressor__max_features': ['sqrt', 'log2'],
+        'regressor__max_depth': [3, 5, 10, 20],
+        'regressor__min_samples_split': [2, 5, 10, 20],
+        'regressor__min_samples_leaf': [1, 2, 4],
+    }
+
+    grid_search = GridSearchCV(pipe, param_grid=param_grid, cv=5)
+    grid_search.fit(x_train, y_train)
+
+    return grid_search.best_params_
 
 
 def save_model(model):
@@ -105,8 +133,9 @@ def save_metrics(mae, mse, rmse, mapa, acc):
 
 def main():
     (x_train, x_test, y_train, y_test) = prepare_data()
-    model = train_model(x_train, x_test, y_train, y_test)
-    save_model(model)
+    train_model(x_train, x_test, y_train, y_test)
+    # model = train_model(x_train, x_test, y_train, y_test)
+    # save_model(model)
 
 
 if __name__ == "__main__":
