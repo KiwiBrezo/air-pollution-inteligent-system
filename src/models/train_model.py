@@ -1,8 +1,11 @@
+from pprint import pprint
+
 import numpy as np
 import pandas as pd
 import pickle
 import os
 import mlflow
+from mlflow import MlflowClient
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline
@@ -24,9 +27,6 @@ def prepare_data():
     print("     -> Number of rows in train dataset: ", len(df_train.index))
     print("     -> Number of rows in test dataset: ", len(df_test.index))
 
-    # df_train = df_train.dropna()
-    # df_test = df_test.dropna()
-
     print("     -> Number of rows after dropping Nan rows in train dataset: ", len(df_train.index))
     print("     -> Number of rows after dropping Nan rows in test dataset: ", len(df_test.index))
 
@@ -44,8 +44,7 @@ def prepare_data():
 
     print("     -> Done preparing data")
 
-    # return train_test_split(df_x, df_y, test_size=0.2)
-    return (df_train_x, df_test_x, df_train_y, df_test_y)
+    return df_train_x, df_test_x, df_train_y, df_test_y
 
 
 def train_model(x_train, x_test, y_train, y_test):
@@ -63,24 +62,24 @@ def train_model(x_train, x_test, y_train, y_test):
 
     best_params = get_best_params(x_train, y_train)
 
-    mlflow.sklearn.autolog()
+    with mlflow.start_run(run_name="Train model pipeline") as run:
+        train_pipe.set_params(**best_params)
 
-    train_pipe.set_params(**best_params)
+        train_pipe.fit(x_train, y_train)
 
-    train_pipe.fit(x_train, y_train)
+        predictions = train_pipe.predict(x_test)
 
-    predictions = train_pipe.predict(x_test)
+        mae = metrics.mean_absolute_error(y_test, predictions)
+        mse = metrics.mean_squared_error(y_test, predictions)
+        rmse = np.sqrt(metrics.mean_squared_error(y_test, predictions))
+        mape = np.mean(np.abs((y_test - predictions) / np.abs(predictions)))
+        acc = round(100 * (1 - mape), 2)
 
-    mae = metrics.mean_absolute_error(y_test, predictions)
-    mse = metrics.mean_squared_error(y_test, predictions)
-    rmse = np.sqrt(metrics.mean_squared_error(y_test, predictions))
-    mape = np.mean(np.abs((y_test - predictions) / np.abs(predictions)))
-    acc = round(100 * (1 - mape), 2)
+        mlflow.log_params(best_params)
+        mlflow.log_metrics({"mae": mae, "mse": mse, "rmse": rmse, "mape": mape, "acc": acc})
+        mlflow.sklearn.log_model(train_pipe, artifact_path="sklearn-model",
+                                 registered_model_name="air_pollution_reg_model")
 
-    mlflow.log_params(best_params)
-    mlflow.sklearn.log_model(train_pipe, artifact_path="air-pollution-model-pipeline")
-
-    mlflow.last_active_run()
     save_metrics(mae, mse, rmse, mape, acc)
 
     print('Mean Absolute Error (MAE):', mae)
@@ -95,6 +94,8 @@ def train_model(x_train, x_test, y_train, y_test):
 
 
 def get_best_params(x_train, y_train):
+    print("--- Getting best params with GridSearch ---")
+
     pipe = Pipeline([
         ('imputer', SimpleImputer()),
         ('regressor', RandomForestRegressor())
@@ -111,8 +112,47 @@ def get_best_params(x_train, y_train):
     grid_search = GridSearchCV(pipe, param_grid=param_grid, cv=5)
     grid_search.fit(x_train, y_train)
 
+    print("     -> Done searching for params")
+
     return grid_search.best_params_
 
+def compare_latest_model_with_production():
+    print("--- Checking if latest model is better than production model ---")
+
+    client = MlflowClient()
+    latest_metrics = {}
+    production_metrics = {}
+    production_version = -1
+    latest_version = -1
+    for model in client.search_model_versions("name='air_pollution_reg_model'"):
+        pprint(dict(model), indent=4)
+        if int(model.version) > latest_version and model.current_stage == "None":
+            latest_version = int(model.version)
+            latest_metrics = client.get_metric_history(model.run_id, "acc")
+        if int(model.version) > production_version and model.current_stage == "Production":
+            production_version = int(model.version)
+            production_metrics = client.get_metric_history(model.run_id, "acc")
+
+    if production_version == -1 or latest_version == -1:
+        return
+
+    print("     -> Latest model accuracy:", latest_metrics[0].value)
+    print("     -> Production model accuracy:", production_metrics[0].value)
+
+    if latest_metrics[0].value > production_metrics[0].value:
+        client.transition_model_version_stage(
+            name="air_pollution_reg_model",
+            version=latest_version,
+            stage="Production"
+        )
+
+        client.transition_model_version_stage(
+            name="air_pollution_reg_model",
+            version=production_version,
+            stage="Archived"
+        )
+
+    print("     -> Done checking results")
 
 def save_model(model):
     print("--- Saving model ---")
@@ -121,7 +161,7 @@ def save_model(model):
     with open(pkl_filename, 'wb') as file:
         pickle.dump(model, file)
 
-    print("     -> Done model")
+    print("     -> Done saving model")
 
 
 def save_metrics(mae, mse, rmse, mapa, acc):
@@ -136,12 +176,10 @@ def save_metrics(mae, mse, rmse, mapa, acc):
 
     metrics_file.close()
 
-
 def main():
     (x_train, x_test, y_train, y_test) = prepare_data()
     train_model(x_train, x_test, y_train, y_test)
-    # model = train_model(x_train, x_test, y_train, y_test)
-    # save_model(model)
+    compare_latest_model_with_production()
 
 
 if __name__ == "__main__":
