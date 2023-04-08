@@ -50,7 +50,6 @@ def prepare_data():
 
 def train_model(x_train, x_test, y_train, y_test):
     print("--- Starting training model ---")
-    mlflow.sklearn.autolog()
 
     x_train = np.array(x_train)
     x_test = np.array(x_test)
@@ -62,7 +61,11 @@ def train_model(x_train, x_test, y_train, y_test):
         ('regressor', RandomForestRegressor())
     ])
 
-    train_pipe.set_params(**get_best_params(x_train, y_train))
+    best_params = get_best_params(x_train, y_train)
+
+    mlflow.sklearn.autolog()
+
+    train_pipe.set_params(**best_params)
 
     train_pipe.fit(x_train, y_train)
 
@@ -73,6 +76,9 @@ def train_model(x_train, x_test, y_train, y_test):
     rmse = np.sqrt(metrics.mean_squared_error(y_test, predictions))
     mape = np.mean(np.abs((y_test - predictions) / np.abs(predictions)))
     acc = round(100 * (1 - mape), 2)
+
+    mlflow.log_params(best_params)
+    mlflow.sklearn.log_model(train_pipe, artifact_path="air-pollution-model-pipeline")
 
     mlflow.last_active_run()
     save_metrics(mae, mse, rmse, mape, acc)

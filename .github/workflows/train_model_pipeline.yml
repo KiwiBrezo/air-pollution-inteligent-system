@@ -8,7 +8,7 @@ on:
       - completed
 
 jobs:
-  check_api:
+  train_model:
     runs-on: ubuntu-latest
     strategy:
       matrix:
