@@ -90,7 +90,7 @@ def train_model(x_train, x_test, y_train, y_test):
 
     print("     -> Done training model")
 
-    return train_pipe
+    save_model(train_pipe)
 
 
 def get_best_params(x_train, y_train):
@@ -115,6 +115,7 @@ def get_best_params(x_train, y_train):
     print("     -> Done searching for params")
 
     return grid_search.best_params_
+
 
 def compare_latest_model_with_production():
     print("--- Checking if latest model is better than production model ---")
@@ -154,6 +155,7 @@ def compare_latest_model_with_production():
 
     print("     -> Done checking results")
 
+
 def save_model(model):
     print("--- Saving model ---")
 
@@ -175,6 +177,7 @@ def save_metrics(mae, mse, rmse, mapa, acc):
     metrics_file.write("ACCURACY:" + str(acc) + "\n")
 
     metrics_file.close()
+
 
 def main():
     (x_train, x_test, y_train, y_test) = prepare_data()

@@ -5,3 +5,4 @@ poetry.lock
 /data
 /reports/data_report/index.html
 /reports/data_stability/index.html
+/mlruns/
