@@ -27,10 +27,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           dvc pull -v -f -r origin
-      - name: Export DagsHub MlFlow Credentials
-        run: |
-          export MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}
-          export MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -38,4 +34,7 @@ jobs:
           poetry install --no-root --without dev
       - name: Run model training
         run: |
+          export MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}
+          export MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+          
           poetry run python src/models/train_model.py
