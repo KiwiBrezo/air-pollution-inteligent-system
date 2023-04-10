@@ -7,6 +7,8 @@ import pandas as pd
 from fastapi.encoders import jsonable_encoder
 from mlflow import MlflowClient
 
+from src.util.database_connector import get_database
+
 file_location = os.path.dirname(__file__)
 model = None
 
@@ -47,4 +49,11 @@ def predict_air_pollution(data):
     x = np.array(df[["temperature", "relativehumidity", "dewpoint", "surface_pressure", "cloudcover", "windspeed",
                      "winddirection", "pm25"]])
 
-    return model.predict(x)
+    predictions = model.predict(x)
+
+    df["pm10"] = predictions.tolist()
+    json = df.to_dict(orient='records')
+
+    get_database()["predictions"].insert_many(json)
+
+    return predictions
