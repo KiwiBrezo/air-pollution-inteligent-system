@@ -1,3 +1,6 @@
+# https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions/
+# https://stackoverflow.com/a/70447517
+
 name: Run deploy
 
 on:
@@ -6,25 +9,18 @@ on:
       - master
     paths:
       - src
+  workflow_dispatch:
 
 jobs:
   deploy-app:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9"]
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+      - name: install ssh keys
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry
-          poetry install --no-root --without dev
-      - name: Deploy to ...
-        run: |
-          echo "Not implemented yet"
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+      - name: connect and pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git pull && docker-compose up -d && exit"
+      - name: cleanup
+        run: rm -rf ~/.ssh

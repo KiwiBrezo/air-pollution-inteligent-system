@@ -3,6 +3,7 @@ services:
   air-pollution-backend:
     image: air-pollution-backend
     build:
+      context: ./
       dockerfile: ./Dockerfile
     container_name: air-pollution-backend
     hostname: air-pollution-backend
