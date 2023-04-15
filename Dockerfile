@@ -5,19 +5,21 @@ WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+#RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade poetry
+RUN poetry install --no-root --without dev
 
 COPY ./src /code/src
 
-RUN mkdir -p ./data/processed
-RUN mkdir -p ./data/raw/air
-RUN mkdir -p ./data/raw/weather
-RUN mkdir -p ./models
-RUN mkdir -p ./reports/figures
+#RUN mkdir -p ./data/processed
+#RUN mkdir -p ./data/raw/air
+#RUN mkdir -p ./data/raw/weather
+#RUN mkdir -p ./models
+#RUN mkdir -p ./reports/figures
 
-RUN python ./src/data/fetch_data.py
-RUN python ./src/models/train_model.py
+#RUN python ./src/data/fetch_data.py
+#RUN python ./src/models/train_model.py
 
 EXPOSE 8000
 
-CMD ["uvicorn", "src.serve.air_pollution_controller:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "src.serve.air_pollution_controller:app", "--host", "0.0.0.0", "--port", "8000"]
