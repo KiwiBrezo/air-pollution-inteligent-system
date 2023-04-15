@@ -21,7 +21,7 @@ function showBasicData(data) {
 
 function getBasicPollutionData() {
     $.ajax({
-        url : "http://localhost:8000/air/now/ptuj",
+        url : "http://164.8.9.88:8000/air/now/ptuj",
         success : function (data) {
             let meteoroloske_data = data.sort(function(a,b){
                 return new Date(a.datum_od) - new Date(b.datum_od);
@@ -68,7 +68,7 @@ function getForecastData(pm25_value) {
 function getForecastAirPollution(preparedData) {
     $.ajax({
         type : "POST",
-        url : "http://localhost:8000/air/prediction",
+        url : "http://164.8.9.88:8000/air/prediction",
         contentType: 'application/json',
         data : JSON.stringify(preparedData),
         processData: false,
